@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { getFrequency } from './api/api';
 
 function App() {
-  const [data, setData] = useState([{}]);
   const [word, setWord] = useState("");
   const [frequency, setFrequency] = useState(0);
-  const [message, setMessage] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();

@@ -10,7 +10,8 @@ export async function getFrequency(word) {
 
         const frequency = response.data.frequency;
         return frequency;
-    } catch (error) {
+    }
+    catch (error) {
         if (error.response) {
             console.log(error.response);
             console.log(error.response.status);
