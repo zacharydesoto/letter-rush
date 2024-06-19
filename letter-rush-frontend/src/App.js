@@ -1,32 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { getFrequency } from './api/api';
 
 function App() {
-  const [data, setData] = useState([{}])
-  const [word, setWord] = useState("")
+  const [data, setData] = useState([{}]);
+  const [word, setWord] = useState("");
+  const [frequency, setFrequency] = useState(0);
+  const [message, setMessage] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log('Word: ', word);
+    const frequency = await getFrequency(word);
+    setFrequency(frequency);
   }
-
-  function getData() {
-    axios({
-      method: "GET",
-      url:"/profile",
-    })
-    .then((response) => {
-      const res =response.data
-      setProfileData(({
-        profile_name: res.name,
-        about_me: res.about}))
-    }).catch((error) => {
-      if (error.response) {
-        console.log(error.response)
-        console.log(error.response.status)
-        console.log(error.response.headers)
-        }
-    })}
 
   return (
     <div>
@@ -37,26 +22,9 @@ function App() {
         </label>
         <button type='submit'>Submit</button>
       </form>
+      <p>Frequency: {frequency}</p>
     </div>
   );
 }
 
 export default App;
-
-function getData() {
-    axios({
-      method: "GET",
-      url:"/profile",
-    })
-    .then((response) => {
-      const res =response.data
-      setProfileData(({
-        profile_name: res.name,
-        about_me: res.about}))
-    }).catch((error) => {
-      if (error.response) {
-        console.log(error.response)
-        console.log(error.response.status)
-        console.log(error.response.headers)
-        }
-    })}
