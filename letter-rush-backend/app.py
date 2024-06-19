@@ -8,8 +8,9 @@ CORS(app)
 @app.route('/check-word', methods=['GET'])
 def check_word():
     word = request.args.get('word')
+    first_word = word.split(' ')[0]
 
-    frequency = get_word_frequency(word)
+    frequency = get_word_frequency(first_word)
 
     response = {
         'message': 'Frequency checked successfully',
