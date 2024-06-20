@@ -1,27 +1,28 @@
 import React, { useState } from "react"
 import { getFrequency } from "../api/api";
-import { STATUS } from "../pages/Game";
+import { STATUS, RARITY } from "../pages/Game";
 
-export default function AnswerBar({ previousAnswers, setPreviousAnswers, status, setStatus }) {
+export default function AnswerBar({ previousAnswers, setPreviousAnswers, status, setStatus, setAnswer }) {
     const [word, setWord] = useState("");
 
     async function handleSubmit(e) {
         e.preventDefault();
         const frequency = await getFrequency(word);
-        if (frequency < 2) {
-            setStatus(STATUS.INVALID_WORD);
+        if (frequency < 2 || word.length < 4) {
+            setStatus(frequency < 2 ? STATUS.INVALID_WORD : STATUS.SHORT_WORD);
+            setAnswer({ word: word, score: 0, rarity: RARITY.INVALID })
             return;
         }
 
-        console.log("Word: ", word, " Frequency: ", frequency);
-
         setStatus(STATUS.VALID_WORD);
         const answer = { word: word, score: calculateScore(word, frequency), rarity: getRarity(frequency) };
+        console.log("Answer: ", answer)
+        setAnswer(answer);
         setPreviousAnswers([...previousAnswers, answer]);
       }
-      
+
     function calculateScore(word, frequency) {
-        return (word.length + (100 / frequency)).toFixed(2);
+        return Math.round(word.length + (100 / frequency));
     }
 
     function getRarity(frequency) {
