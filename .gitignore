@@ -25,3 +25,5 @@ yarn-error.log*
 *.csv
 
 /letter-rush-backend/__pycache__
+/letter-rush-backend/venv
+/.idea
