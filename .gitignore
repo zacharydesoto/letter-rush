@@ -2,7 +2,7 @@
 
 # dependencies
 /letter-rush-frontend/node_modules
-/.pnp
+/letter-rush-frontend/.pnp
 .pnp.js
 
 # testing
