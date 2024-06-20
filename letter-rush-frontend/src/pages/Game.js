@@ -2,15 +2,20 @@ import React, { useState } from "react"
 import AnswerBar from "../components/AnswerBar"
 import PreviousAnswers from "../components/PreviousAnswers";
 
+export const STATUS = {
+    START_GAME: "Start_game",
+    INVALID_WORD: "Invalid_word",
+    VALID_WORD: "Valid_word",
+    TIMEOUT: "Timeout"
+};
+
 export default function Game() {
-    const [frequency, setFrequency] = useState(0);
-    const [previousAnswers, setPreviousAnswers] = useState([{word : "Answers", score: "0", rarity: "Legendary" }, {word: "test2", score: "100", rarity: "common"}])
-    // const previousAnswers = [{word : "Answers", score: "0", rarity: "Legendary" }, {word: "test2", score: "100", rarity: "common"}];
+    const [previousAnswers, setPreviousAnswers] = useState([{ word: "Answer", score: "Score", rarity: "Rarity"}])
+    const [status, setStatus] = useState(STATUS.START_GAME);
 
     return (
         <>
-            <AnswerBar setFrequency={setFrequency} setPreviousAnswers={setPreviousAnswers} />
-            <p>Frequency {frequency}</p>
+            <AnswerBar previousAnswers={previousAnswers} setPreviousAnswers={setPreviousAnswers} status={status} setStatus={setStatus} />
 
             <PreviousAnswers previousAnswers={previousAnswers} />
         </>
