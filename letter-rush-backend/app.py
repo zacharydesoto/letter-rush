@@ -7,7 +7,6 @@ CORS(app)
 
 @app.route('/check-word', methods=['GET'])
 def check_word():
-    print('function called')
     word = request.args.get('word')
     first_word = word.split(' ')[0]
 
