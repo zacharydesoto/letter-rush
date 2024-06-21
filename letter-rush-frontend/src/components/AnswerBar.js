@@ -6,16 +6,20 @@ export default function AnswerBar({ previousAnswers, setPreviousAnswers, status,
     const [word, setWord] = useState("");
 
     async function handleSubmit(e) {
-        e.preventDefault();
-        const frequency = await getFrequency(word);
-        if (frequency < 2 || word.length < 4) {
+        e.preventDefault(); // Prevents reloading page
+
+        if (status === STATUS.TIMEOUT) // Should not be able to submit
+            return;
+
+        const frequency = await getFrequency(word); // Calls api function
+        if (frequency < 2 || word.length < 4) { // Checks for valid word
             setStatus(frequency < 2 ? STATUS.INVALID_WORD : STATUS.SHORT_WORD);
             setAnswer({ word: word, score: 0, rarity: RARITY.INVALID })
             setWord("");
             return;
         }
 
-        for (let i = 0; i < previousAnswers.length; i++) {
+        for (let i = 0; i < previousAnswers.length; i++) { // Checks for duplicate word
             if (previousAnswers[i].word === word) {
                 setStatus(STATUS.DUPLICATE_WORD);
                 setAnswer({ word: word, score: 0, rarity: RARITY.INVALID })
@@ -26,11 +30,10 @@ export default function AnswerBar({ previousAnswers, setPreviousAnswers, status,
 
         setStatus(STATUS.VALID_WORD);
         const answer = { word: word, score: calculateScore(word, frequency), rarity: getRarity(frequency) };
-        console.log("Answer: ", answer)
         setAnswer(answer);
         setWord("");
         setPreviousAnswers([...previousAnswers, answer]);
-      }
+    }
 
     function calculateScore(word, frequency) {
         return Math.round(word.length + (100 / frequency));
@@ -44,10 +47,15 @@ export default function AnswerBar({ previousAnswers, setPreviousAnswers, status,
         <form onSubmit={handleSubmit}>
             <label>
                 Word:
-                <input type='text' className='rounded-md border border-gray-400 p-3 mb-5' value={word} onChange={(e) => setWord(e.target.value)} />
+                <input type='text' disabled={status === STATUS.TIMEOUT} className='rounded-md border border-gray-400 p-3 mb-5' value={word} onChange={(e) => setWord(e.target.value)} />
             </label>
+
             <div className='font-bold text-3xl'>
-                <button type='submit'>Submit</button>
+                {status !== STATUS.TIMEOUT ?
+                    <button type='submit'>Submit</button>
+                    :
+                    <span>&nbsp;</span>
+                }
             </div>
         </form>
     )

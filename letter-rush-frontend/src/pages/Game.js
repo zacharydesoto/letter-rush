@@ -3,6 +3,7 @@ import AnswerBar from "../components/AnswerBar"
 import PreviousAnswers from "../components/PreviousAnswers";
 import StatusMessage from "../components/StatusMessage";
 import Timer from "../components/Timer";
+import RestartButton from "../components/RestartButton";
 
 export const STATUS = {
     START_GAME: "Start_game",
@@ -34,7 +35,8 @@ export default function Game() {
                 <br />
                 <StatusMessage status={status} answer={answer} />
                 <br />
-                <Timer setStatus={setStatus} />
+                <Timer status={status} setStatus={setStatus} />
+                <RestartButton status={status} setStatus={setStatus} />
                 <br />
                 <PreviousAnswers previousAnswers={previousAnswers} />
             </div>

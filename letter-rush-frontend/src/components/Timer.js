@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { STATUS } from "../pages/Game";
 
-export default function Timer({ setStatus }) {
+export default function Timer({ status, setStatus }) {
     const initialTime = 5;
-    const [timeRemaining, setTimeRemaining] = useState(initialTime)
+    const [timeRemaining, setTimeRemaining] = useState(initialTime);
+    const [isActive, setIsActive] = useState(true);
 
     let interval;
 
     useEffect(() => {
-        interval = setInterval(updateTimer, 100); // 100 ms between function calls
+        if (isActive) {
+            setTimeRemaining(initialTime);
+            interval = setInterval(updateTimer, 100); // 100 ms between function calls
 
-        return () => clearInterval(interval); // Returning function to useEffect calls that function when the component unmounts
-    }, [])
+            return () => clearInterval(interval); // Returning function to useEffect calls that function when the component unmounts
+        }
+    }, [isActive])
 
     function updateTimer() {
         setTimeRemaining((prevTime) => { // Arrow function used to avoid stale closure. Basically, using timeRemaining within a setInterval only uses the initial value.
@@ -26,6 +30,15 @@ export default function Timer({ setStatus }) {
             setTimeRemaining((0).toFixed(1));
         }
     }, [timeRemaining])
+
+    useEffect(() => {
+        if (status === STATUS.START_GAME) {
+            setIsActive(true);
+        }
+        else if (status === STATUS.TIMEOUT) {
+            setIsActive(false);
+        }
+    }, [status])
 
     return (
         <p>{timeRemaining}</p>
