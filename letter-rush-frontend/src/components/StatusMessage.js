@@ -13,6 +13,9 @@ export default function StatusMessage({ status, answer }) {
         case STATUS.SHORT_WORD:
             statusMessage = answer.word + " is too short. Enter a word containing 4 or more letters.";
             break;
+        case STATUS.DUPLICATE_WORD:
+            statusMessage = "You have already entered " + answer.word + ". Enter a new word.";
+            break; 
         case STATUS.VALID_WORD:
             statusMessage = answer.word + " is a " + answer.rarity + " word worth " + answer.score + " points!";
             break;

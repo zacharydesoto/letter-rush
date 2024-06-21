@@ -6,8 +6,9 @@ import StatusMessage from "../components/StatusMessage";
 export const STATUS = {
     START_GAME: "Start_game",
     INVALID_WORD: "Invalid_word",
-    VALID_WORD: "Valid_word",
     SHORT_WORD: "Short_word",
+    DUPLICATE_WORD: "Duplicate_word",
+    VALID_WORD: "Valid_word",
     TIMEOUT: "Timeout"
 };
 
