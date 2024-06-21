@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import AnswerBar from "../components/AnswerBar"
 import PreviousAnswers from "../components/PreviousAnswers";
 import StatusMessage from "../components/StatusMessage";
+import Timer from "../components/Timer";
 
 export const STATUS = {
     START_GAME: "Start_game",
@@ -22,17 +23,21 @@ export const RARITY = {
 }
 
 export default function Game() {
-    const [previousAnswers, setPreviousAnswers] = useState([{ word: "Answer", score: "Score", rarity: "Rarity"}])
+    const [previousAnswers, setPreviousAnswers] = useState([{ word: "Answer", score: "Score", rarity: "Rarity" }])
     const [status, setStatus] = useState(STATUS.START_GAME);
     const [answer, setAnswer] = useState({});
 
     return (
         <>
-            <AnswerBar previousAnswers={previousAnswers} setPreviousAnswers={setPreviousAnswers} status={status} setStatus={setStatus} setAnswer={setAnswer} />
-            <br />
-            <StatusMessage status={status} answer={answer} />
-            <br />
-            <PreviousAnswers previousAnswers={previousAnswers} />
+            <div className="ml-5 mt-5">
+                <AnswerBar previousAnswers={previousAnswers} setPreviousAnswers={setPreviousAnswers} status={status} setStatus={setStatus} setAnswer={setAnswer} />
+                <br />
+                <StatusMessage status={status} answer={answer} />
+                <br />
+                <Timer setStatus={setStatus} />
+                <br />
+                <PreviousAnswers previousAnswers={previousAnswers} />
+            </div>
         </>
     )
 }

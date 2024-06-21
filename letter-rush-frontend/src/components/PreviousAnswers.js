@@ -1,15 +1,12 @@
 import React from "react"
 
 export default function PreviousAnswers( {previousAnswers} ) {
-
-    const answers = previousAnswers;
-
     return (
         <div>
             {previousAnswers.map((answer) => {
                 return (
                     <div>
-                        <p>{answer.word} {answer.score} {answer.rarity}</p>
+                        <p key={answer.word}>{answer.word} {answer.score} {answer.rarity}</p>
                     </div>
                 );
             })}
