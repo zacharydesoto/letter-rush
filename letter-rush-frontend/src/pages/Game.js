@@ -10,6 +10,7 @@ export const STATUS = {
     INVALID_WORD: "Invalid_word",
     SHORT_WORD: "Short_word",
     DUPLICATE_WORD: "Duplicate_word",
+    MULTIPLE_WORDS: "Multiple_words",
     VALID_WORD: "Valid_word",
     TIMEOUT: "Timeout"
 };

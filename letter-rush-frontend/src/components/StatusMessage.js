@@ -15,7 +15,10 @@ export default function StatusMessage({ status, answer }) {
             break;
         case STATUS.DUPLICATE_WORD:
             statusMessage = "You have already entered " + answer.word + ". Enter a new word.";
-            break; 
+            break;
+        case STATUS.MULTIPLE_WORDS:
+            statusMessage = "Enter a single word with no spaces."
+            break;
         case STATUS.VALID_WORD:
             statusMessage = answer.word + " is a " + answer.rarity + " word worth " + answer.score + " points!";
             break;

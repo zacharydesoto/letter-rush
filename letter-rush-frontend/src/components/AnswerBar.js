@@ -11,10 +11,17 @@ export default function AnswerBar({ previousAnswers, setPreviousAnswers, status,
         if (status === STATUS.TIMEOUT) // Should not be able to submit
             return;
 
-        const frequency = await getFrequency(word); // Calls api function
+        if (word.split(/\s+/).length > 1) { // Multiple words
+            setStatus(STATUS.MULTIPLE_WORDS);
+            setAnswer({ word: word, score: 0, rarity: RARITY.INVALID });
+            setWord("");
+            return;
+        }
+
+        const frequency = await getFrequency(word); // Calls api function, frequency ranges from 1.0 to 8.0, but usually from ~3 to ~6
         if (frequency < 2 || word.length < 4) { // Checks for valid word
             setStatus(frequency < 2 ? STATUS.INVALID_WORD : STATUS.SHORT_WORD);
-            setAnswer({ word: word, score: 0, rarity: RARITY.INVALID })
+            setAnswer({ word: word, score: 0, rarity: RARITY.INVALID });
             setWord("");
             return;
         }
@@ -29,18 +36,34 @@ export default function AnswerBar({ previousAnswers, setPreviousAnswers, status,
         }
 
         setStatus(STATUS.VALID_WORD);
-        const answer = { word: word, score: calculateScore(word, frequency), rarity: getRarity(frequency) };
+        let rarity = getRarity(frequency)
+        const answer = { word: word, score: calculateScore(word, frequency, rarity), rarity: rarity };
         setAnswer(answer);
-        setWord("");
+        setWord(""); // Clears word input
         setPreviousAnswers([...previousAnswers, answer]);
     }
 
-    function calculateScore(word, frequency) {
-        return Math.round(word.length + (100 / frequency));
+    function calculateScore(word, frequency, rarity) {
+        let multipliers = { [RARITY.COMMON]: 1, [RARITY.UNCOMMON]: 1.25, [RARITY.RARE]: 1.5, [RARITY.LEGENDARY]: 1.75, [RARITY.MYTHICAL]: 2 }
+        let score = word.length + (400 / (frequency ** 2));
+        score *= multipliers[rarity];
+        return Math.round(score);
     }
 
     function getRarity(frequency) {
-        return (frequency < 4) ? "Legendary" : "Common";
+        let rarity;
+        if (frequency < 3)
+            rarity = RARITY.MYTHICAL
+        else if (frequency >= 3 && frequency < 3.5)
+            rarity = RARITY.LEGENDARY
+        else if (frequency >= 3.5 && frequency < 4)
+            rarity = RARITY.RARE
+        else if (frequency >= 4 && frequency < 4.5)
+            rarity = RARITY.UNCOMMON
+        else
+            rarity = RARITY.COMMON
+        console.log("Frequency is ", frequency, " so rarity is ", rarity)
+        return rarity;
     }
 
     return (
