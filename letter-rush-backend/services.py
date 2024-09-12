@@ -5,10 +5,11 @@ import inflect
 def get_word_frequency(word):
     d = enchant.Dict("en_US")
     valid_word = d.check(word.capitalize())
+    frequency = 0
     if valid_word:
         singular = get_singular_form(word)
         frequency = zipf_frequency(singular, lang='en', wordlist='best')
-    return frequency if valid_word else 0
+    return frequency
 
 def get_singular_form(word):
     p = inflect.engine()
