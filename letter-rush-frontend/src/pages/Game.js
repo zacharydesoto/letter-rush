@@ -36,7 +36,7 @@ export default function Game() {
                 <StatusMessage status={status} answer={answer} />
                 <br />
                 <Timer status={status} setStatus={setStatus} />
-                <RestartButton status={status} setStatus={setStatus} />
+                <RestartButton status={status} setStatus={setStatus} setPreviousAnswers={setPreviousAnswers} />
                 <br />
                 <PreviousAnswers previousAnswers={previousAnswers} />
             </div>

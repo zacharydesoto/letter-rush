@@ -1,9 +1,10 @@
 import React from "react";
 import { STATUS } from "../pages/Game";
 
-export default function RestartButton({ status, setStatus }) {
+export default function RestartButton({ status, setStatus, setPreviousAnswers }) {
     function restartGame() {
         setStatus(STATUS.START_GAME);
+        setPreviousAnswers([{ word: "Answer", score: "Score", rarity: "Rarity" }]);
     }
 
     return (
