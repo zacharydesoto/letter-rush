@@ -11,6 +11,16 @@ export default function AnswerBar({ previousAnswers, setPreviousAnswers, status,
         if (status === STATUS.TIMEOUT) // Should not be able to submit
             return;
 
+        if (word.length == 0)
+            return;
+
+        if (word.length < 4) {
+            setStatus(STATUS.SHORT_WORD);
+            setAnswer({ word: word, score: 0, rarity: RARITY.INVALID });
+            setWord("");
+            return;
+        }
+
         if (word.split(/\s+/).length > 1) { // Multiple words
             setStatus(STATUS.MULTIPLE_WORDS);
             setAnswer({ word: word, score: 0, rarity: RARITY.INVALID });
@@ -19,8 +29,8 @@ export default function AnswerBar({ previousAnswers, setPreviousAnswers, status,
         }
 
         const frequency = await getFrequency(word); // Calls api function, frequency ranges from 1.0 to 8.0, but usually from ~3 to ~6
-        if (frequency < 2 || word.length < 4) { // Checks for valid word
-            setStatus(frequency < 2 ? STATUS.INVALID_WORD : STATUS.SHORT_WORD);
+        if (frequency < 0.1) { // Checks for valid word
+            setStatus(STATUS.INVALID_WORD);
             setAnswer({ word: word, score: 0, rarity: RARITY.INVALID });
             setWord("");
             return;
